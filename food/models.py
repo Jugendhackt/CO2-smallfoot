@@ -20,3 +20,19 @@ class food(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Benutzer(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Benutzerpunkte(models.Model):
+    benutzer = models.ForeignKey(Benutzer, db_index=True, on_delete=models.CASCADE)
+    punkte = models.DecimalField(decimal_places=5, max_digits=12)
+    tag = models.DateField()
+
+    def __str__(self):
+        return "{}, {}: {}".format(self.benutzer.name, self.tag, self.punkte)
