@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
+
+
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -12,18 +17,103 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
+
+
+        <style>
+    body{
+        background: lightblue;
+
+}
+.aa{
+    margin-top: 20vh;
+    color:black;
+    margin-bottom:20px;
+}
+    .maina{
+    color: #000;
+    height:80vh;
+    }
+
+#myProgress {
+  width: 100%;
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 20px
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
+.parallax {
+  /* The image used */
+  background-image: url("/static/co2hintergrund.jpg");
+
+  /* Full height */
+  height: 80vh;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.name{
+    position:relative;
+    padding-top:200px;
+    display: block;
+    text-transform: uppercase;
+    /* font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif; */
+    font-size: 4em;
+    font-weight: 300;
+    text-align:center;
+    color:white;
+    }
+    </style>
+
+        <script>
+
+        var max = 8.2
+function move() {
+console.log("move");
+
+          var i = parseFloat(document.getElementById("result").innerHTML.replace(',','.'));
+    var width = i/max*100;
+    var elem = document.getElementById("myBar");
+        elem.style.width = width + "%";
+        if (width > 100){
+       elem.style.backgroundColor = "red";
+        }
+}
+document.addEventListener('DOMContentLoaded',move,false);
+
+jarallax(document.querySelectorAll('.jarallax'));
+    </script>
     <meta charset="UTF-8">
     <title>Rechner</title>
 </head>
 <body>
-<div classs="row">
+<div class="parallax">
+    <span class="name">smallFoot</span>
+
+</div>
+<div style="text-align:center;display:block" class="row aa">
+     <h3>Rechner</h3>
+</div>
+
+
+<div class="row maina">
     <div class="col-md-4 offset-md-4">
         <div>
             <form method="post">{% csrf_token %}
                 {{form.as_p}}
-                <button type="submit">Hinzufügen</button>
-                {{result}}
-
+                <button onclick="move()" type="submit">Hinzufügen</button>
+                <div id="result" style="display:inline">{{result}}</div>
+                kg CO2
+                <div id="myProgress">
+                    <div id="myBar"></div>
+                </div>
             </form>
         </div>
     </div>
