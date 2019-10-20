@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import render
 
 from food.forms import CalcForm
-from .models import food
+from .models import food, Benutzer
+
 
 # Create your views here.
 
@@ -11,6 +12,7 @@ def food_list(request):
     #eingetragene Werte aufsummieren
     #carbon_val = food.objects.filter(name=request)[0].CO2
     return render(request, 'food/food_list.html', {'co2': carbon_val})
+
 
 def calc(request):
     result =""
@@ -21,7 +23,10 @@ def calc(request):
             data["co2_nahrung"] = float(data["co2_nahrung"])
             data["menge"] = float(data["menge"])
             print(data)
-            result = str( data["co2_nahrung"] * data["menge"])
+            punkte = data["co2_nahrung"] * data["menge"]
+            result = Benutzer.objects.get(id=data["benutzer"]).punkte_aktualisieren(punkte=punkte, tag=data["tag"])
+
     else:
         form = CalcForm()
+
     return render(request, "food/berechnung.html", {"form": form, "result": result})
