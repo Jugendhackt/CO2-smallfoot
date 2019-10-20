@@ -15,18 +15,25 @@ def food_list(request):
 
 
 def calc(request):
-    result =""
+    result = ""
+    rest = 20
     if request.POST:
         form = CalcForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            data["co2_nahrung"] = float(data["co2_nahrung"])
+            co2 = food.objects.get(id=data["co2_nahrung"]).CO2
             data["menge"] = float(data["menge"])
             print(data)
-            punkte = data["co2_nahrung"] * data["menge"]
+            punkte = float(co2) * data["menge"]
             result = Benutzer.objects.get(id=data["benutzer"]).punkte_aktualisieren(punkte=punkte, tag=data["tag"])
+            # 20kg CO2 für Ernährung
+            rest = 20 - result
+            if rest < 0:
+                rest = 0
 
     else:
         form = CalcForm()
+    if result != "":
+        result = '{:.2f}'.format(result)
 
-    return render(request, "food/berechnung.html", {"form": form, "result": result})
+    return render(request, "food/berechnung.html", {"form": form, "result": result, "rest":rest})
